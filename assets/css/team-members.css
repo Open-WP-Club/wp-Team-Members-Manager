@@ -1,0 +1,56 @@
+.team-members-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 2em;
+  padding: 1em;
+}
+
+.team-member {
+  text-align: center;
+  padding: 1em;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.team-member:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.team-member img {
+  max-width: 150px;
+  height: auto;
+  border-radius: 50%;
+  margin-bottom: 1em;
+  object-fit: cover;
+}
+
+.team-member .default-avatar {
+  background-color: #f5f5f5;
+  padding: 1em;
+}
+
+.team-member h3 {
+  margin: 0.5em 0;
+  color: #333;
+  font-size: 1.2em;
+}
+
+.team-member .title {
+  color: #666;
+  margin: 0.5em 0;
+  font-style: italic;
+}
+
+.team-member .email a,
+.team-member .website a {
+  color: #0073aa;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.team-member .email a:hover,
+.team-member .website a:hover {
+  color: #00a0d2;
+}

@@ -1,0 +1,119 @@
+.team-members-grid {
+  display: grid;
+  grid-template-columns: repeat(var(--members-per-row, 4), 1fr);
+  gap: var(--team-gap, 20px);
+  padding: 1em;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Responsive grid adjustments */
+@media (max-width: 1200px) {
+  .team-members-grid {
+    grid-template-columns: repeat(min(var(--members-per-row, 4), 3), 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .team-members-grid {
+    grid-template-columns: repeat(min(var(--members-per-row, 4), 2), 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .team-members-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Individual team member card */
+.team-member {
+  text-align: center;
+  padding: 1.5em;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Image styling */
+.team-member-image,
+.default-avatar img {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  margin: 0 auto 1em;
+  display: block;
+  object-fit: cover;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Text elements */
+.team-member h3 {
+  margin: 0.5em 0;
+  color: #333;
+  font-size: 1.2em;
+  line-height: 1.4;
+}
+
+.team-member .department {
+  color: #666;
+  margin: 0.5em 0;
+  font-style: italic;
+  line-height: 1.3;
+}
+
+.team-member .email,
+.team-member .website {
+  margin: 0.5em 0;
+  word-break: break-word;
+}
+
+.team-member .email a,
+.team-member .website a {
+  color: #0073aa;
+  text-decoration: none;
+  display: inline-block;
+  transition: color 0.2s ease;
+}
+
+.team-member .email a:hover,
+.team-member .website a:hover {
+  color: #00a0d2;
+}
+
+/* Fix for responsive images */
+.team-member img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure consistent spacing */
+.team-member>* {
+  margin-bottom: 0.75em;
+}
+
+.team-member>*:last-child {
+  margin-bottom: 0;
+}
+
+/* Default avatar specific styling */
+.default-avatar {
+  background-color: #f8f9fa;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+/* Print styles */
+@media print {
+  .team-members-grid {
+    display: block;
+  }
+
+  .team-member {
+    page-break-inside: avoid;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+  }
+}

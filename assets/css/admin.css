@@ -1,0 +1,109 @@
+/* Team Navigation */
+.team-navigation {
+  display: flex;
+  gap: 10px;
+  margin: 15px 0;
+  padding: 10px 0;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.team-navigation .button {
+  margin: 0;
+}
+
+/* Make navigation visible on taxonomy page */
+.taxonomy-team_department .team-navigation {
+  margin: 15px 20px;
+}
+
+/* Settings Panel */
+.team-settings-panel {
+  display: none;
+  background: #fff;
+  padding: 20px;
+  margin: 20px 0;
+  border: 1px solid #ccd0d4;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+}
+
+.team-settings-panel h2 {
+  margin-top: 0;
+}
+
+/* Table Styling */
+.team-members-admin .wp-list-table td {
+  vertical-align: middle;
+}
+
+.column-image {
+  width: 60px;
+}
+
+.column-image img {
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.column-contact a {
+  margin-right: 10px;
+  text-decoration: none;
+  color: #666;
+}
+
+.column-contact a:hover {
+  color: #0073aa;
+}
+
+.column-actions .button {
+  margin-right: 5px;
+}
+
+/* Add New/Edit Team Member Page */
+.post-type-team_member #titlediv {
+  margin-top: 20px;
+}
+
+.post-type-team_member .team-navigation {
+  margin: 10px 0 0 0;
+}
+
+/* Meta Box Styling */
+.team-member-meta select[multiple] {
+  height: 100px;
+}
+
+.team-member-meta input,
+.team-member-meta select {
+  max-width: 400px;
+}
+
+/* No Items Message */
+.no-items {
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #ccd0d4;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+  text-align: center;
+}
+
+/* Responsive Navigation */
+@media screen and (max-width: 782px) {
+  .team-navigation {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .team-navigation .button {
+    text-align: center;
+  }
+
+  .team-members-admin .wp-list-table td {
+    padding: 8px;
+  }
+}
+
+/* Department Page Specific */
+.taxonomy-team_department .form-wrap {
+  margin-top: 20px;
+}

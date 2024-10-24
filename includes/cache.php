@@ -6,7 +6,10 @@ class TeamCache
     $instance = new self();
     add_action('save_post', array($instance, 'clearCache'));
     add_action('deleted_post', array($instance, 'clearCache'));
-    add_action('update_option_team_member_titles', array($instance, 'clearCache'));
+    add_action('edit_term', array($instance, 'clearCache'));
+    add_action('delete_term', array($instance, 'clearCache'));
+    add_action('update_option_team_members_per_row', array($instance, 'clearCache'));
+    add_action('update_option_team_member_gap', array($instance, 'clearCache'));
   }
 
   public function clearCache($post_id = null)
@@ -24,6 +27,6 @@ class TeamCache
 
   public static function set($content)
   {
-    set_transient(TEAM_CACHE_KEY, $content);
+    set_transient(TEAM_CACHE_KEY, $content, DAY_IN_SECONDS);
   }
 }

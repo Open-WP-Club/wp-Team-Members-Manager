@@ -9,13 +9,13 @@ class TeamShortcode
 
   public function render($atts)
   {
-    $width = get_option('team_member_width', '300');
+    $members_per_row = get_option('team_members_per_row', '4');
     $gap = get_option('team_member_gap', '20');
 
     $custom_css = "
             <style>
                 .team-members-grid {
-                    --team-width: {$width}px;
+                    --members-per-row: {$members_per_row};
                     --team-gap: {$gap}px;
                 }
             </style>
@@ -40,7 +40,6 @@ class TeamShortcode
     }
 
     ob_start();
-    // Output the custom CSS
     echo $custom_css;
 ?>
     <div class="team-members-grid">
@@ -57,7 +56,7 @@ class TeamShortcode
             <?php echo get_the_post_thumbnail($member->ID, 'medium', array('class' => 'team-member-image')); ?>
           <?php else: ?>
             <div class="default-avatar">
-              <img src="<?php echo TEAM_PLUGIN_URL; ?>assets/images/default.png" alt="Default Avatar">
+              <img src="<?php echo TEAM_PLUGIN_URL; ?>assets/images/default.svg" alt="Default Avatar">
             </div>
           <?php endif; ?>
 

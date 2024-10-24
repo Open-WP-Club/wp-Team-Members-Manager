@@ -23,6 +23,7 @@ require_once TEAM_PLUGIN_PATH . 'includes/admin.php';
 require_once TEAM_PLUGIN_PATH . 'includes/cache.php';
 require_once TEAM_PLUGIN_PATH . 'includes/meta.php';
 require_once TEAM_PLUGIN_PATH . 'includes/shortcode.php';
+require_once TEAM_PLUGIN_PATH . 'includes/post-type-templates.php';
 
 // Initialize the plugin
 class TeamMembers
@@ -48,6 +49,7 @@ class TeamMembers
     TeamCache::init();
     TeamMeta::init();
     TeamShortcode::init();
+    TeamMemberTemplates::init();
   }
 
   public function registerPostType()
@@ -66,12 +68,12 @@ class TeamMembers
         'not_found_in_trash' => 'No team members found in trash'
       ),
       'public' => true,
-      'publicly_queryable' => false, // Prevents direct access to single pages
+      'publicly_queryable' => false,
       'show_ui' => true,
       'show_in_menu' => false,
       'supports' => array('title', 'thumbnail'),
       'has_archive' => false,
-      'rewrite' => false // Prevents URL rewrites
+      'rewrite' => false
     ));
   }
 

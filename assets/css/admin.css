@@ -1,47 +1,34 @@
-/* General Admin Layout */
-.team-members-admin {
-  margin: 20px 0;
-}
-
-/* Quick Actions Section */
-.team-quick-actions {
+/* Team Navigation */
+.team-navigation {
   display: flex;
-  justify-content: space-between;
+  gap: 10px;
+  margin: 15px 0;
+  padding: 10px 0;
   align-items: center;
-  margin: 20px 0;
-  padding: 15px;
+  flex-wrap: wrap;
+}
+
+.team-navigation .button {
+  margin: 0;
+}
+
+/* Make navigation visible on taxonomy page */
+.taxonomy-team_department .team-navigation {
+  margin: 15px 20px;
+}
+
+/* Settings Panel */
+.team-settings-panel {
+  display: none;
   background: #fff;
+  padding: 20px;
+  margin: 20px 0;
   border: 1px solid #ccd0d4;
   box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
 }
 
-.quick-links .button {
-  margin-right: 10px;
-}
-
-.shortcode-info {
-  background: #f8f9fa;
-  padding: 8px 12px;
-  border-radius: 3px;
-}
-
-.shortcode-info code {
-  margin-right: 10px;
-  padding: 4px 8px;
-}
-
-/* Filters Section */
-.team-filters {
-  margin: 20px 0;
-  padding: 15px;
-  background: #fff;
-  border: 1px solid #ccd0d4;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
-}
-
-.team-filters select {
-  margin-right: 10px;
-  min-width: 200px;
+.team-settings-panel h2 {
+  margin-top: 0;
 }
 
 /* Table Styling */
@@ -72,11 +59,51 @@
   margin-right: 5px;
 }
 
-/* Empty State */
+/* Add New/Edit Team Member Page */
+.post-type-team_member #titlediv {
+  margin-top: 20px;
+}
+
+.post-type-team_member .team-navigation {
+  margin: 10px 0 0 0;
+}
+
+/* Meta Box Styling */
+.team-member-meta select[multiple] {
+  height: 100px;
+}
+
+.team-member-meta input,
+.team-member-meta select {
+  max-width: 400px;
+}
+
+/* No Items Message */
 .no-items {
   padding: 20px;
   background: #fff;
   border: 1px solid #ccd0d4;
   box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
   text-align: center;
+}
+
+/* Responsive Navigation */
+@media screen and (max-width: 782px) {
+  .team-navigation {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .team-navigation .button {
+    text-align: center;
+  }
+
+  .team-members-admin .wp-list-table td {
+    padding: 8px;
+  }
+}
+
+/* Department Page Specific */
+.taxonomy-team_department .form-wrap {
+  margin-top: 20px;
 }

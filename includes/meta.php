@@ -42,7 +42,6 @@ class TeamMeta
     $fields = array(
       'team_member_name' => 'sanitize_text_field',
       'team_member_email' => 'sanitize_email',
-      'team_member_title' => 'sanitize_text_field',
       'team_member_website' => 'esc_url_raw'
     );
 
@@ -50,6 +49,12 @@ class TeamMeta
       if (isset($_POST[$field])) {
         update_post_meta($post_id, '_' . $field, $sanitize($_POST[$field]));
       }
+    }
+
+    // Save departments
+    if (isset($_POST['team_member_department'])) {
+      $departments = array_map('absint', $_POST['team_member_department']);
+      wp_set_object_terms($post_id, $departments, 'team_department');
     }
   }
 }

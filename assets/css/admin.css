@@ -1,19 +1,82 @@
-.team-section {
-  background: #fff;
-  padding: 20px;
+/* General Admin Layout */
+.team-members-admin {
   margin: 20px 0;
+}
+
+/* Quick Actions Section */
+.team-quick-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 20px 0;
+  padding: 15px;
+  background: #fff;
   border: 1px solid #ccd0d4;
   box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
 }
 
-.team-section h2 {
-  margin-top: 0;
+.quick-links .button {
+  margin-right: 10px;
 }
 
-.team-section .button-primary {
-  margin: 10px 0 20px;
+.shortcode-info {
+  background: #f8f9fa;
+  padding: 8px 12px;
+  border-radius: 3px;
 }
 
-.wp-list-table img {
+.shortcode-info code {
+  margin-right: 10px;
+  padding: 4px 8px;
+}
+
+/* Filters Section */
+.team-filters {
+  margin: 20px 0;
+  padding: 15px;
+  background: #fff;
+  border: 1px solid #ccd0d4;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+}
+
+.team-filters select {
+  margin-right: 10px;
+  min-width: 200px;
+}
+
+/* Table Styling */
+.team-members-admin .wp-list-table td {
+  vertical-align: middle;
+}
+
+.column-image {
+  width: 60px;
+}
+
+.column-image img {
   border-radius: 50%;
+  object-fit: cover;
+}
+
+.column-contact a {
+  margin-right: 10px;
+  text-decoration: none;
+  color: #666;
+}
+
+.column-contact a:hover {
+  color: #0073aa;
+}
+
+.column-actions .button {
+  margin-right: 5px;
+}
+
+/* Empty State */
+.no-items {
+  padding: 20px;
+  background: #fff;
+  border: 1px solid #ccd0d4;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .04);
+  text-align: center;
 }

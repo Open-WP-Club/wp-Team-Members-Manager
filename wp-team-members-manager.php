@@ -1,10 +1,10 @@
 <?php
 /*
-Plugin Name: Team Members Manager
+Plugin Name: WP Team Members Manager
 Plugin URI: https://openwpclub.com
 Description: Manages and displays team members with customizable titles
 Version: 1.0
-Author: Your Name
+Author: OpenWPClub.com
 License: GPL v2 or later
 Text Domain: team-members-manager
 */
@@ -41,6 +41,7 @@ class TeamMembers
   {
     add_action('init', array($this, 'registerPostType'));
     add_action('wp_enqueue_scripts', array($this, 'enqueueFrontend'));
+    add_action('template_redirect', array($this, 'restrictSingleView'));
 
     // Initialize components
     TeamAdmin::init();
@@ -54,21 +55,39 @@ class TeamMembers
     register_post_type('team_member', array(
       'labels' => array(
         'name' => 'Team Members',
-        'singular_name' => 'Team Member'
+        'singular_name' => 'Team Member',
+        'add_new' => 'Add New Member',
+        'add_new_item' => 'Add New Team Member',
+        'edit_item' => 'Edit Team Member',
+        'new_item' => 'New Team Member',
+        'view_item' => 'View Team Member',
+        'search_items' => 'Search Team Members',
+        'not_found' => 'No team members found',
+        'not_found_in_trash' => 'No team members found in trash'
       ),
       'public' => true,
+      'publicly_queryable' => false, // Prevents direct access to single pages
       'show_ui' => true,
       'show_in_menu' => false,
       'supports' => array('title', 'thumbnail'),
-      'has_archive' => false
+      'has_archive' => false,
+      'rewrite' => false // Prevents URL rewrites
     ));
+  }
+
+  public function restrictSingleView()
+  {
+    if (is_singular('team_member')) {
+      wp_redirect(home_url());
+      exit;
+    }
   }
 
   public function enqueueFrontend()
   {
     wp_enqueue_style(
       'team-members',
-      TEAM_PLUGIN_URL . 'assets/css/front.css',
+      TEAM_PLUGIN_URL . 'assets/css/team-members.css',
       array(),
       '1.1'
     );

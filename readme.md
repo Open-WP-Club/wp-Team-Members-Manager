@@ -1,13 +1,12 @@
 # WordPress Team Members Plugin
 
-A simple yet powerful WordPress plugin to manage and display your team members on your website. This plugin allows you to create custom titles for your team members, add contact information, and display them in a responsive grid layout.
+A simple yet powerful WordPress plugin to manage and display your team members on your website. This plugin allows you to create and manage team members, organize them by departments, and display them in a responsive grid layout.
 
 ## Features
 
 - Easy-to-use team member management interface
-- Custom titles management system
+- Department management system
 - Responsive grid layout for team display
-- Integration with WordPress Users menu
 - Support for profile images
 - Custom fields for contact information
 - Shortcode support for flexible placement
@@ -17,27 +16,38 @@ A simple yet powerful WordPress plugin to manage and display your team members o
 1. Download the plugin files
 2. Upload the plugin folder to the `/wp-content/plugins/` directory
 3. Activate the plugin through the 'Plugins' menu in WordPress
-4. Configure available titles under 'Users > Team Titles'
+4. Access the team management interface under the 'Users' menu
+
 
 ## Usage
 
-### Adding Team Titles
+### Managing Departments
 
-1. Navigate to 'Users > Team Titles' in your WordPress admin panel
-2. Enter the titles you want to make available (one per line)
-3. Click 'Save Changes'
+1. Navigate to 'Users > Team Members' in your WordPress admin panel
+2. Click 'Manage Departments'
+3. Add your desired departments
+4. Click 'Add New Department'
 
 ### Adding Team Members
 
 1. Go to 'Users > Team Members'
-2. Click 'Add New'
+2. Click 'Add New Member'
 3. Fill in the following information:
    - Full Name
+   - Select Department(s)
    - Email Address
-   - Select Title (from previously configured titles)
    - Website URL (optional)
    - Featured Image (for profile photo)
 4. Click 'Publish'
+
+### Display Settings
+
+1. Go to 'Users > Team Members'
+2. Click 'Display Settings'
+3. Configure:
+   - Number of members per row (1-6)
+   - Space between members (0-100px)
+4. Click 'Save Settings'
 
 ### Displaying Team Members
 
@@ -48,6 +58,15 @@ Example:
 ```
 [team_members]
 ```
+
+## Customization
+
+### Grid Settings
+
+The grid layout can be customized through the admin interface:
+
+- Number of members per row (1-6)
+- Gap between members (0-100px)
 
 ## Requirements
 

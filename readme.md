@@ -1,82 +1,82 @@
-# WordPress Team Members Plugin
+# Team Member Manager for WordPress
 
-A simple yet powerful WordPress plugin to manage and display your team members on your website. This plugin allows you to create and manage team members, organize them by departments, and display them in a responsive grid layout.
+A lightweight WordPress plugin to manage and display team members with a responsive grid layout.
 
 ## Features
 
-- Easy-to-use team member management interface
-- Department management system
-- Responsive grid layout for team display
-- Support for profile images
-- Custom fields for contact information
-- Shortcode support for flexible placement
+- Simple team member management interface
+- Department taxonomy for organization
+- Responsive CSS Grid layout
+- Profile image support via Featured Image
+- Contact fields (email, website)
+- Shortcode for flexible placement
+- Transient caching for performance
+- REST API compatible
+- Translation ready
+
+## Requirements
+
+- WordPress 6.5+
+- PHP 8.2+
 
 ## Installation
 
-1. Download the plugin files
-2. Upload the plugin folder to the `/wp-content/plugins/` directory
-3. Activate the plugin through the 'Plugins' menu in WordPress
-4. Access the team management interface under the 'Users' menu
-
+1. Upload the plugin folder to `/wp-content/plugins/`
+2. Activate via the Plugins menu
+3. Access team management under Users > Team Members
 
 ## Usage
 
 ### Managing Departments
 
-1. Navigate to 'Users > Team Members' in your WordPress admin panel
-2. Click 'Manage Departments'
-3. Add your desired departments
-4. Click 'Add New Department'
+1. Go to Users > Team Members
+2. Click "Manage Departments"
+3. Add your departments
 
 ### Adding Team Members
 
-1. Go to 'Users > Team Members'
-2. Click 'Add New Member'
-3. Fill in the following information:
+1. Go to Users > Team Members
+2. Click "Add New Member"
+3. Fill in:
    - Full Name
-   - Select Department(s)
-   - Email Address
-   - Website URL (optional)
-   - Featured Image (for profile photo)
-4. Click 'Publish'
+   - Department(s)
+   - Email (optional)
+   - Website (optional)
+   - Featured Image for profile photo
+4. Click Publish
 
 ### Display Settings
 
-1. Go to 'Users > Team Members'
-2. Click 'Display Settings'
+1. Go to Users > Team Members
+2. Click "Display Settings"
 3. Configure:
-   - Number of members per row (1-6)
-   - Space between members (0-100px)
-4. Click 'Save Settings'
+   - Members per row (1-6)
+   - Gap between members (0-100px)
+4. Save Settings
 
 ### Displaying Team Members
 
-Use the shortcode `[team_members]` in any post, page, or widget area where you want to display your team grid.
-
-Example:
+Use the shortcode in any post, page, or widget:
 
 ```
 [team_members]
 ```
 
-## Customization
+## Changelog
 
-### Grid Settings
+### 2.0.0
+- Requires PHP 8.2+ and WordPress 6.5+
+- Added strict types throughout
+- Added REST API support
+- Improved caching with `wp_add_inline_style()`
+- Removed deprecated code patterns
+- Added capability checks
+- Improved security with proper escaping
+- Translation-ready strings
 
-The grid layout can be customized through the admin interface:
-
-- Number of members per row (1-6)
-- Gap between members (0-100px)
-
-## Requirements
-
-- WordPress 5.0 or higher
-- PHP 7.0 or higher
+### 1.0.0
+- Initial release
 
 ## License
 
-This plugin is licensed under the GPL v2 or later.
-
-## Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
+GPL v2 or later

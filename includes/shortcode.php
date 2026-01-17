@@ -1,88 +1,108 @@
 <?php
-class TeamShortcode
+
+declare(strict_types=1);
+
+defined('ABSPATH') || exit;
+
+final class TeamShortcode
 {
-  public static function init()
-  {
-    $instance = new self();
-    add_shortcode('team_members', array($instance, 'render'));
-  }
-
-  public function render($atts)
-  {
-    $members_per_row = get_option('team_members_per_row', '4');
-    $gap = get_option('team_member_gap', '20');
-
-    $custom_css = "
-            <style>
-                .team-members-grid {
-                    --members-per-row: {$members_per_row};
-                    --team-gap: {$gap}px;
-                }
-            </style>
-        ";
-
-    $cache = TeamCache::get();
-    if ($cache !== false) {
-      return $custom_css . $cache;
+    public static function init(): void
+    {
+        add_shortcode('team_members', [self::class, 'render']);
+        add_action('wp_enqueue_scripts', [self::class, 'enqueueInlineStyles']);
     }
 
-    $args = array(
-      'post_type' => 'team_member',
-      'posts_per_page' => -1,
-      'orderby' => 'menu_order title',
-      'order' => 'ASC'
-    );
+    public static function enqueueInlineStyles(): void
+    {
+        if (!is_singular() && !is_page()) {
+            return;
+        }
 
-    $team_members = get_posts($args);
+        global $post;
+        if (!$post || !has_shortcode($post->post_content, 'team_members')) {
+            return;
+        }
 
-    if (empty($team_members)) {
-      return '<p>No team members found.</p>';
+        $members_per_row = (int) get_option('team_members_per_row', 4);
+        $gap = (int) get_option('team_member_gap', 20);
+
+        $css = ".team-members-grid{--members-per-row:{$members_per_row};--team-gap:{$gap}px}";
+
+        wp_add_inline_style('team-members', $css);
     }
 
-    ob_start();
-    echo $custom_css;
-?>
-    <div class="team-members-grid">
-      <?php foreach ($team_members as $member): ?>
-        <?php
-        $name = get_post_meta($member->ID, '_team_member_name', true);
-        $email = get_post_meta($member->ID, '_team_member_email', true);
-        $website = get_post_meta($member->ID, '_team_member_website', true);
-        $departments = wp_get_object_terms($member->ID, 'team_department');
-        $department_names = !is_wp_error($departments) ? wp_list_pluck($departments, 'name') : array();
+    /**
+     * @param array<string, mixed>|string $atts
+     */
+    public static function render(array|string $atts = []): string
+    {
+        $cache = TeamCache::get();
+        if ($cache !== false && is_string($cache)) {
+            return $cache;
+        }
+
+        $team_members = get_posts([
+            'post_type'      => 'team_member',
+            'posts_per_page' => -1,
+            'orderby'        => 'menu_order title',
+            'order'          => 'ASC',
+        ]);
+
+        if (empty($team_members)) {
+            return '<p>' . esc_html__('No team members found.', 'team-members-manager') . '</p>';
+        }
+
+        ob_start();
         ?>
-        <div class="team-member">
-          <?php if (has_post_thumbnail($member->ID)): ?>
-            <?php echo get_the_post_thumbnail($member->ID, 'medium', array('class' => 'team-member-image')); ?>
-          <?php else: ?>
-            <div class="default-avatar">
-              <img src="<?php echo TEAM_PLUGIN_URL; ?>assets/images/default.svg" alt="Default Avatar">
-            </div>
-          <?php endif; ?>
+        <div class="team-members-grid">
+            <?php foreach ($team_members as $member):
+                $name = get_post_meta($member->ID, '_team_member_name', true);
+                $email = get_post_meta($member->ID, '_team_member_email', true);
+                $website = get_post_meta($member->ID, '_team_member_website', true);
+                $departments = wp_get_object_terms($member->ID, 'team_department');
+                $department_names = !is_wp_error($departments) ? wp_list_pluck($departments, 'name') : [];
+                ?>
+                <div class="team-member">
+                    <?php if (has_post_thumbnail($member->ID)): ?>
+                        <?php echo get_the_post_thumbnail($member->ID, 'medium', ['class' => 'team-member-image']); ?>
+                    <?php else: ?>
+                        <div class="default-avatar">
+                            <img src="<?php echo esc_url(TEAM_PLUGIN_URL . 'assets/images/default.svg'); ?>"
+                                 alt="<?php esc_attr_e('Default Avatar', 'team-members-manager'); ?>"
+                                 loading="lazy">
+                        </div>
+                    <?php endif; ?>
 
-          <h3><?php echo esc_html($name); ?></h3>
+                    <h3><?php echo esc_html((string) $name); ?></h3>
 
-          <?php if (!empty($department_names)): ?>
-            <div class="department"><?php echo esc_html(implode(', ', $department_names)); ?></div>
-          <?php endif; ?>
+                    <?php if (!empty($department_names)): ?>
+                        <div class="department"><?php echo esc_html(implode(', ', $department_names)); ?></div>
+                    <?php endif; ?>
 
-          <?php if ($email): ?>
-            <div class="email">
-              <a href="mailto:<?php echo esc_attr($email); ?>"><?php echo esc_html($email); ?></a>
-            </div>
-          <?php endif; ?>
+                    <?php if ($email): ?>
+                        <div class="email">
+                            <a href="mailto:<?php echo esc_attr((string) $email); ?>"><?php echo esc_html((string) $email); ?></a>
+                        </div>
+                    <?php endif; ?>
 
-          <?php if ($website): ?>
-            <div class="website">
-              <a href="<?php echo esc_url($website); ?>" target="_blank">Website</a>
-            </div>
-          <?php endif; ?>
+                    <?php if ($website): ?>
+                        <div class="website">
+                            <a href="<?php echo esc_url((string) $website); ?>" target="_blank" rel="noopener">
+                                <?php esc_html_e('Website', 'team-members-manager'); ?>
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endforeach; ?>
         </div>
-      <?php endforeach; ?>
-    </div>
-<?php
-    $output = ob_get_clean();
-    TeamCache::set($output);
-    return $custom_css . $output;
-  }
+        <?php
+        $output = ob_get_clean();
+
+        if ($output !== false) {
+            TeamCache::set($output);
+            return $output;
+        }
+
+        return '';
+    }
 }

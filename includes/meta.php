@@ -16,7 +16,7 @@ final class TeamMeta
     {
         add_meta_box(
             'team_member_details',
-            __('Team Member Details', 'team-members-manager'),
+            __('Team Member Details', 'wp-team-manager'),
             [self::class, 'renderMetaBox'],
             'team_member',
             'normal',

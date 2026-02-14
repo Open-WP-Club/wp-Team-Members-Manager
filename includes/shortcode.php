@@ -6,15 +6,17 @@ defined('ABSPATH') || exit;
 
 final class TeamShortcode
 {
+    private static bool $styles_enqueued = false;
+
     public static function init(): void
     {
         add_shortcode('team_members', [self::class, 'render']);
-        add_action('wp_enqueue_scripts', [self::class, 'enqueueInlineStyles']);
+        add_action('wp_enqueue_scripts', [self::class, 'maybeEnqueueStyles']);
     }
 
-    public static function enqueueInlineStyles(): void
+    public static function maybeEnqueueStyles(): void
     {
-        if (!is_singular() && !is_page()) {
+        if (!is_singular()) {
             return;
         }
 
@@ -23,12 +25,22 @@ final class TeamShortcode
             return;
         }
 
+        self::enqueueStyles();
+    }
+
+    private static function enqueueStyles(): void
+    {
+        if (self::$styles_enqueued) {
+            return;
+        }
+        self::$styles_enqueued = true;
+
+        wp_enqueue_style('team-members');
+
         $members_per_row = (int) get_option('team_members_per_row', 4);
         $gap = (int) get_option('team_member_gap', 20);
 
-        $css = ".team-members-grid{--members-per-row:{$members_per_row};--team-gap:{$gap}px}";
-
-        wp_add_inline_style('team-members', $css);
+        wp_add_inline_style('team-members', ".team-members-grid{--members-per-row:{$members_per_row};--team-gap:{$gap}px}");
     }
 
     /**
@@ -36,20 +48,43 @@ final class TeamShortcode
      */
     public static function render(array|string $atts = []): string
     {
-        $cache = TeamCache::get();
+        self::enqueueStyles();
+
+        $atts = shortcode_atts([
+            'department' => '',
+            'limit'      => -1,
+        ], $atts, 'team_members');
+
+        $department = sanitize_text_field($atts['department']);
+        $limit = (int) $atts['limit'];
+
+        $cache_key = '_' . md5($department . '|' . $limit);
+        $cache = TeamCache::get($cache_key);
         if ($cache !== false && is_string($cache)) {
             return $cache;
         }
 
-        $team_members = get_posts([
+        $query_args = [
             'post_type'      => 'team_member',
-            'posts_per_page' => -1,
+            'posts_per_page' => $limit > 0 ? $limit : -1,
             'orderby'        => 'menu_order title',
             'order'          => 'ASC',
-        ]);
+        ];
+
+        if ($department !== '') {
+            $query_args['tax_query'] = [
+                [
+                    'taxonomy' => 'team_department',
+                    'field'    => 'slug',
+                    'terms'    => array_map('trim', explode(',', $department)),
+                ],
+            ];
+        }
+
+        $team_members = get_posts($query_args);
 
         if (empty($team_members)) {
-            return '<p>' . esc_html__('No team members found.', 'team-members-manager') . '</p>';
+            return '<p>' . esc_html__('No team members found.', 'wp-team-manager') . '</p>';
         }
 
         ob_start();
@@ -68,7 +103,7 @@ final class TeamShortcode
                     <?php else: ?>
                         <div class="default-avatar">
                             <img src="<?php echo esc_url(TEAM_PLUGIN_URL . 'assets/images/default.svg'); ?>"
-                                 alt="<?php esc_attr_e('Default Avatar', 'team-members-manager'); ?>"
+                                 alt="<?php esc_attr_e('Default Avatar', 'wp-team-manager'); ?>"
                                  loading="lazy">
                         </div>
                     <?php endif; ?>
@@ -88,7 +123,7 @@ final class TeamShortcode
                     <?php if ($website): ?>
                         <div class="website">
                             <a href="<?php echo esc_url((string) $website); ?>" target="_blank" rel="noopener">
-                                <?php esc_html_e('Website', 'team-members-manager'); ?>
+                                <?php esc_html_e('Website', 'wp-team-manager'); ?>
                             </a>
                         </div>
                     <?php endif; ?>
@@ -99,7 +134,7 @@ final class TeamShortcode
         $output = ob_get_clean();
 
         if ($output !== false) {
-            TeamCache::set($output);
+            TeamCache::set($output, $cache_key);
             return $output;
         }
 

@@ -30,11 +30,11 @@ final class TeamCSV
     public function exportMembers(): void
     {
         if (!current_user_can('manage_options')) {
-            wp_die(__('Unauthorized access', 'team-members-manager'));
+            wp_die(__('Unauthorized access', 'wp-team-manager'));
         }
 
         if (!wp_verify_nonce($_GET['_wpnonce'] ?? '', 'team_export_members')) {
-            wp_die(__('Security check failed', 'team-members-manager'));
+            wp_die(__('Security check failed', 'wp-team-manager'));
         }
 
         $members = get_posts([
@@ -53,7 +53,7 @@ final class TeamCSV
 
         $output = fopen('php://output', 'w');
         if ($output === false) {
-            wp_die(__('Failed to create output stream', 'team-members-manager'));
+            wp_die(__('Failed to create output stream', 'wp-team-manager'));
         }
 
         // UTF-8 BOM for Excel compatibility
@@ -93,11 +93,11 @@ final class TeamCSV
     public function exportDepartments(): void
     {
         if (!current_user_can('manage_options')) {
-            wp_die(__('Unauthorized access', 'team-members-manager'));
+            wp_die(__('Unauthorized access', 'wp-team-manager'));
         }
 
         if (!wp_verify_nonce($_GET['_wpnonce'] ?? '', 'team_export_departments')) {
-            wp_die(__('Security check failed', 'team-members-manager'));
+            wp_die(__('Security check failed', 'wp-team-manager'));
         }
 
         $departments = get_terms([
@@ -114,7 +114,7 @@ final class TeamCSV
 
         $output = fopen('php://output', 'w');
         if ($output === false) {
-            wp_die(__('Failed to create output stream', 'team-members-manager'));
+            wp_die(__('Failed to create output stream', 'wp-team-manager'));
         }
 
         // UTF-8 BOM for Excel compatibility
@@ -143,15 +143,15 @@ final class TeamCSV
     public function importMembers(): void
     {
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => __('Unauthorized access', 'team-members-manager')]);
+            wp_send_json_error(['message' => __('Unauthorized access', 'wp-team-manager')]);
         }
 
         if (!wp_verify_nonce($_POST['_wpnonce'] ?? '', 'team_import_members')) {
-            wp_send_json_error(['message' => __('Security check failed', 'team-members-manager')]);
+            wp_send_json_error(['message' => __('Security check failed', 'wp-team-manager')]);
         }
 
         if (!isset($_FILES['csv_file']) || $_FILES['csv_file']['error'] !== UPLOAD_ERR_OK) {
-            wp_send_json_error(['message' => __('No file uploaded or upload error', 'team-members-manager')]);
+            wp_send_json_error(['message' => __('No file uploaded or upload error', 'wp-team-manager')]);
         }
 
         $file = $_FILES['csv_file']['tmp_name'];
@@ -159,7 +159,7 @@ final class TeamCSV
 
         $handle = fopen($file, 'r');
         if ($handle === false) {
-            wp_send_json_error(['message' => __('Failed to read CSV file', 'team-members-manager')]);
+            wp_send_json_error(['message' => __('Failed to read CSV file', 'wp-team-manager')]);
         }
 
         // Skip BOM if present
@@ -172,7 +172,7 @@ final class TeamCSV
         $header = fgetcsv($handle);
         if ($header === false) {
             fclose($handle);
-            wp_send_json_error(['message' => __('Empty CSV file', 'team-members-manager')]);
+            wp_send_json_error(['message' => __('Empty CSV file', 'wp-team-manager')]);
         }
 
         $header = array_map('strtolower', array_map('trim', $header));
@@ -183,7 +183,7 @@ final class TeamCSV
             fclose($handle);
             wp_send_json_error([
                 'message' => sprintf(
-                    __('Missing required columns: %s', 'team-members-manager'),
+                    __('Missing required columns: %s', 'wp-team-manager'),
                     implode(', ', $missing)
                 ),
             ]);
@@ -218,7 +218,7 @@ final class TeamCSV
 
         wp_send_json_success([
             'message' => sprintf(
-                __('Import completed: %d created, %d updated', 'team-members-manager'),
+                __('Import completed: %d created, %d updated', 'wp-team-manager'),
                 $results['created'],
                 $results['updated']
             ),
@@ -338,22 +338,22 @@ final class TeamCSV
     public function importDepartments(): void
     {
         if (!current_user_can('manage_options')) {
-            wp_send_json_error(['message' => __('Unauthorized access', 'team-members-manager')]);
+            wp_send_json_error(['message' => __('Unauthorized access', 'wp-team-manager')]);
         }
 
         if (!wp_verify_nonce($_POST['_wpnonce'] ?? '', 'team_import_departments')) {
-            wp_send_json_error(['message' => __('Security check failed', 'team-members-manager')]);
+            wp_send_json_error(['message' => __('Security check failed', 'wp-team-manager')]);
         }
 
         if (!isset($_FILES['csv_file']) || $_FILES['csv_file']['error'] !== UPLOAD_ERR_OK) {
-            wp_send_json_error(['message' => __('No file uploaded or upload error', 'team-members-manager')]);
+            wp_send_json_error(['message' => __('No file uploaded or upload error', 'wp-team-manager')]);
         }
 
         $file = $_FILES['csv_file']['tmp_name'];
 
         $handle = fopen($file, 'r');
         if ($handle === false) {
-            wp_send_json_error(['message' => __('Failed to read CSV file', 'team-members-manager')]);
+            wp_send_json_error(['message' => __('Failed to read CSV file', 'wp-team-manager')]);
         }
 
         // Skip BOM if present
@@ -366,7 +366,7 @@ final class TeamCSV
         $header = fgetcsv($handle);
         if ($header === false) {
             fclose($handle);
-            wp_send_json_error(['message' => __('Empty CSV file', 'team-members-manager')]);
+            wp_send_json_error(['message' => __('Empty CSV file', 'wp-team-manager')]);
         }
 
         $header = array_map('strtolower', array_map('trim', $header));
@@ -377,7 +377,7 @@ final class TeamCSV
             fclose($handle);
             wp_send_json_error([
                 'message' => sprintf(
-                    __('Missing required columns: %s', 'team-members-manager'),
+                    __('Missing required columns: %s', 'wp-team-manager'),
                     implode(', ', $missing)
                 ),
             ]);
@@ -433,7 +433,7 @@ final class TeamCSV
 
         wp_send_json_success([
             'message' => sprintf(
-                __('Import completed: %d created, %d updated', 'team-members-manager'),
+                __('Import completed: %d created, %d updated', 'wp-team-manager'),
                 $results['created'],
                 $results['updated']
             ),

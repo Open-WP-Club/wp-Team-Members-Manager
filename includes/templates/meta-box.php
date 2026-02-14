@@ -12,7 +12,7 @@ $departments = get_terms([
 ?>
 <div class="team-member-meta">
     <p>
-        <label for="team_member_name"><strong><?php esc_html_e('Full Name:', 'team-members-manager'); ?></strong></label><br>
+        <label for="team_member_name"><strong><?php esc_html_e('Full Name:', 'wp-team-manager'); ?></strong></label><br>
         <input type="text"
                id="team_member_name"
                name="team_member_name"
@@ -22,7 +22,7 @@ $departments = get_terms([
     </p>
 
     <p>
-        <label for="team_member_department"><strong><?php esc_html_e('Department:', 'team-members-manager'); ?></strong></label><br>
+        <label for="team_member_department"><strong><?php esc_html_e('Department:', 'wp-team-manager'); ?></strong></label><br>
         <?php if (!empty($departments) && !is_wp_error($departments)): ?>
             <select id="team_member_department"
                     name="team_member_department[]"
@@ -42,9 +42,9 @@ $departments = get_terms([
                 <?php
                 printf(
                     /* translators: %s: URL to add departments */
-                    esc_html__('No departments found. %s', 'team-members-manager'),
+                    esc_html__('No departments found. %s', 'wp-team-manager'),
                     '<a href="' . esc_url(admin_url('edit-tags.php?taxonomy=team_department&post_type=team_member')) . '">' .
-                    esc_html__('Add departments first', 'team-members-manager') . '</a>.'
+                    esc_html__('Add departments first', 'wp-team-manager') . '</a>.'
                 );
                 ?>
             </span>
@@ -52,7 +52,7 @@ $departments = get_terms([
     </p>
 
     <p>
-        <label for="team_member_email"><strong><?php esc_html_e('Email:', 'team-members-manager'); ?></strong></label><br>
+        <label for="team_member_email"><strong><?php esc_html_e('Email:', 'wp-team-manager'); ?></strong></label><br>
         <input type="email"
                id="team_member_email"
                name="team_member_email"
@@ -61,7 +61,7 @@ $departments = get_terms([
     </p>
 
     <p>
-        <label for="team_member_website"><strong><?php esc_html_e('Website:', 'team-members-manager'); ?></strong></label><br>
+        <label for="team_member_website"><strong><?php esc_html_e('Website:', 'wp-team-manager'); ?></strong></label><br>
         <input type="url"
                id="team_member_website"
                name="team_member_website"

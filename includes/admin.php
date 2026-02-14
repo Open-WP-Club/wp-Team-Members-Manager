@@ -27,8 +27,8 @@ final class TeamAdmin
     {
         add_submenu_page(
             'users.php',
-            __('Team Members', 'team-members-manager'),
-            __('Team Members', 'team-members-manager'),
+            __('Team Members', 'wp-team-manager'),
+            __('Team Members', 'wp-team-manager'),
             'manage_options',
             'team-members',
             [$this, 'renderTeamPage']
@@ -61,14 +61,14 @@ final class TeamAdmin
     {
         register_taxonomy('team_department', 'team_member', [
             'labels' => [
-                'name'          => __('Departments', 'team-members-manager'),
-                'singular_name' => __('Department', 'team-members-manager'),
-                'menu_name'     => __('Departments', 'team-members-manager'),
-                'add_new_item'  => __('Add New Department', 'team-members-manager'),
-                'edit_item'     => __('Edit Department', 'team-members-manager'),
-                'update_item'   => __('Update Department', 'team-members-manager'),
-                'search_items'  => __('Search Departments', 'team-members-manager'),
-                'not_found'     => __('No departments found', 'team-members-manager'),
+                'name'          => __('Departments', 'wp-team-manager'),
+                'singular_name' => __('Department', 'wp-team-manager'),
+                'menu_name'     => __('Departments', 'wp-team-manager'),
+                'add_new_item'  => __('Add New Department', 'wp-team-manager'),
+                'edit_item'     => __('Edit Department', 'wp-team-manager'),
+                'update_item'   => __('Update Department', 'wp-team-manager'),
+                'search_items'  => __('Search Departments', 'wp-team-manager'),
+                'not_found'     => __('No departments found', 'wp-team-manager'),
             ],
             'hierarchical'      => true,
             'show_ui'           => true,
@@ -86,21 +86,21 @@ final class TeamAdmin
         <div class="team-navigation">
             <a href="<?php echo esc_url(admin_url('users.php?page=team-members')); ?>"
                class="button<?php echo $current_page === 'members' ? ' button-primary' : ''; ?>">
-                <?php esc_html_e('Manage Members', 'team-members-manager'); ?>
+                <?php esc_html_e('Manage Members', 'wp-team-manager'); ?>
             </a>
             <a href="<?php echo esc_url(admin_url('post-new.php?post_type=team_member')); ?>"
                class="button<?php echo $current_page === 'new' ? ' button-primary' : ''; ?>">
-                <?php esc_html_e('Add New Member', 'team-members-manager'); ?>
+                <?php esc_html_e('Add New Member', 'wp-team-manager'); ?>
             </a>
             <a href="<?php echo esc_url(admin_url('edit-tags.php?taxonomy=team_department&post_type=team_member')); ?>"
                class="button<?php echo $current_page === 'departments' ? ' button-primary' : ''; ?>">
-                <?php esc_html_e('Manage Departments', 'team-members-manager'); ?>
+                <?php esc_html_e('Manage Departments', 'wp-team-manager'); ?>
             </a>
             <button type="button" class="button team-settings-toggle">
-                <?php esc_html_e('Display Settings', 'team-members-manager'); ?>
+                <?php esc_html_e('Display Settings', 'wp-team-manager'); ?>
             </button>
             <button type="button" class="button team-csv-toggle">
-                <?php esc_html_e('Import/Export', 'team-members-manager'); ?>
+                <?php esc_html_e('Import/Export', 'wp-team-manager'); ?>
             </button>
         </div>
         <?php
@@ -161,7 +161,7 @@ final class TeamAdmin
                     var submitBtn = form.find('button[type=submit]');
                     var originalText = submitBtn.text();
 
-                    submitBtn.prop('disabled', true).text('" . esc_js(__('Importing...', 'team-members-manager')) . "');
+                    submitBtn.prop('disabled', true).text('" . esc_js(__('Importing...', 'wp-team-manager')) . "');
                     resultDiv.removeClass('notice-success notice-error').hide();
 
                     $.ajax({
@@ -174,7 +174,7 @@ final class TeamAdmin
                             if (response.success) {
                                 resultDiv.addClass('notice notice-success').html('<p>' + response.data.message + '</p>').show();
                                 if (response.data.details && response.data.details.errors && response.data.details.errors.length > 0) {
-                                    resultDiv.append('<p><strong>" . esc_js(__('Errors:', 'team-members-manager')) . "</strong></p><ul><li>' + response.data.details.errors.join('</li><li>') + '</li></ul>');
+                                    resultDiv.append('<p><strong>" . esc_js(__('Errors:', 'wp-team-manager')) . "</strong></p><ul><li>' + response.data.details.errors.join('</li><li>') + '</li></ul>');
                                 }
                                 setTimeout(function() { location.reload(); }, 2000);
                             } else {
@@ -182,7 +182,7 @@ final class TeamAdmin
                             }
                         },
                         error: function() {
-                            resultDiv.addClass('notice notice-error').html('<p>" . esc_js(__('An error occurred during import.', 'team-members-manager')) . "</p>').show();
+                            resultDiv.addClass('notice notice-error').html('<p>" . esc_js(__('An error occurred during import.', 'wp-team-manager')) . "</p>').show();
                         },
                         complete: function() {
                             submitBtn.prop('disabled', false).text(originalText);
@@ -199,19 +199,19 @@ final class TeamAdmin
         $gap = (int) get_option('team_member_gap', 20);
         ?>
         <div id="team-settings" class="team-settings-panel" style="display:none;">
-            <h2><?php esc_html_e('Team Display Settings', 'team-members-manager'); ?></h2>
+            <h2><?php esc_html_e('Team Display Settings', 'wp-team-manager'); ?></h2>
             <form method="post" action="options.php">
                 <?php settings_fields('team_settings'); ?>
                 <table class="form-table">
                     <tr>
                         <th scope="row">
-                            <label for="team_members_per_row"><?php esc_html_e('Members Per Row', 'team-members-manager'); ?></label>
+                            <label for="team_members_per_row"><?php esc_html_e('Members Per Row', 'wp-team-manager'); ?></label>
                         </th>
                         <td>
                             <select name="team_members_per_row" id="team_members_per_row">
                                 <?php for ($i = 1; $i <= 6; $i++): ?>
                                     <option value="<?php echo $i; ?>" <?php selected($members_per_row, $i); ?>>
-                                        <?php echo $i; ?> <?php echo $i === 1 ? __('Member', 'team-members-manager') : __('Members', 'team-members-manager'); ?>
+                                        <?php echo $i; ?> <?php echo $i === 1 ? __('Member', 'wp-team-manager') : __('Members', 'wp-team-manager'); ?>
                                     </option>
                                 <?php endfor; ?>
                             </select>
@@ -219,7 +219,7 @@ final class TeamAdmin
                     </tr>
                     <tr>
                         <th scope="row">
-                            <label for="team_member_gap"><?php esc_html_e('Space Between Members (px)', 'team-members-manager'); ?></label>
+                            <label for="team_member_gap"><?php esc_html_e('Space Between Members (px)', 'wp-team-manager'); ?></label>
                         </th>
                         <td>
                             <input type="number"
@@ -228,11 +228,11 @@ final class TeamAdmin
                                    value="<?php echo esc_attr((string) $gap); ?>"
                                    min="0"
                                    max="100">
-                            <p class="description"><?php esc_html_e('Minimum: 0px, Maximum: 100px', 'team-members-manager'); ?></p>
+                            <p class="description"><?php esc_html_e('Minimum: 0px, Maximum: 100px', 'wp-team-manager'); ?></p>
                         </td>
                     </tr>
                 </table>
-                <?php submit_button(__('Save Settings', 'team-members-manager')); ?>
+                <?php submit_button(__('Save Settings', 'wp-team-manager')); ?>
             </form>
         </div>
         <?php
@@ -242,31 +242,31 @@ final class TeamAdmin
     {
         ?>
         <div id="team-csv-panel" class="team-csv-panel" style="display:none;">
-            <h2><?php esc_html_e('Import / Export', 'team-members-manager'); ?></h2>
+            <h2><?php esc_html_e('Import / Export', 'wp-team-manager'); ?></h2>
 
             <div class="team-csv-sections">
                 <!-- Export Section -->
                 <div class="team-csv-section">
-                    <h3><?php esc_html_e('Export', 'team-members-manager'); ?></h3>
-                    <p class="description"><?php esc_html_e('Download your team data as CSV files.', 'team-members-manager'); ?></p>
+                    <h3><?php esc_html_e('Export', 'wp-team-manager'); ?></h3>
+                    <p class="description"><?php esc_html_e('Download your team data as CSV files.', 'wp-team-manager'); ?></p>
 
                     <div class="team-csv-buttons">
                         <a href="<?php echo esc_url(TeamCSV::getMembersExportUrl()); ?>" class="button button-primary">
                             <span class="dashicons dashicons-download"></span>
-                            <?php esc_html_e('Export Members', 'team-members-manager'); ?>
+                            <?php esc_html_e('Export Members', 'wp-team-manager'); ?>
                         </a>
                         <a href="<?php echo esc_url(TeamCSV::getDepartmentsExportUrl()); ?>" class="button">
                             <span class="dashicons dashicons-download"></span>
-                            <?php esc_html_e('Export Departments', 'team-members-manager'); ?>
+                            <?php esc_html_e('Export Departments', 'wp-team-manager'); ?>
                         </a>
                     </div>
                 </div>
 
                 <!-- Import Members Section -->
                 <div class="team-csv-section">
-                    <h3><?php esc_html_e('Import Members', 'team-members-manager'); ?></h3>
+                    <h3><?php esc_html_e('Import Members', 'wp-team-manager'); ?></h3>
                     <p class="description">
-                        <?php esc_html_e('CSV format: name, email, website, departments, image_url', 'team-members-manager'); ?>
+                        <?php esc_html_e('CSV format: name, email, website, departments, image_url', 'wp-team-manager'); ?>
                     </p>
 
                     <form class="team-import-form" enctype="multipart/form-data">
@@ -279,14 +279,14 @@ final class TeamAdmin
                         <p>
                             <label>
                                 <input type="checkbox" name="download_images" value="1">
-                                <?php esc_html_e('Download images from URLs', 'team-members-manager'); ?>
+                                <?php esc_html_e('Download images from URLs', 'wp-team-manager'); ?>
                             </label>
-                            <span class="description"><?php esc_html_e('(may take longer)', 'team-members-manager'); ?></span>
+                            <span class="description"><?php esc_html_e('(may take longer)', 'wp-team-manager'); ?></span>
                         </p>
                         <p>
                             <button type="submit" class="button button-primary">
                                 <span class="dashicons dashicons-upload"></span>
-                                <?php esc_html_e('Import Members', 'team-members-manager'); ?>
+                                <?php esc_html_e('Import Members', 'wp-team-manager'); ?>
                             </button>
                         </p>
                         <div class="import-result" style="display:none;"></div>
@@ -295,9 +295,9 @@ final class TeamAdmin
 
                 <!-- Import Departments Section -->
                 <div class="team-csv-section">
-                    <h3><?php esc_html_e('Import Departments', 'team-members-manager'); ?></h3>
+                    <h3><?php esc_html_e('Import Departments', 'wp-team-manager'); ?></h3>
                     <p class="description">
-                        <?php esc_html_e('CSV format: name, slug, description', 'team-members-manager'); ?>
+                        <?php esc_html_e('CSV format: name, slug, description', 'wp-team-manager'); ?>
                     </p>
 
                     <form class="team-import-form" enctype="multipart/form-data">
@@ -310,7 +310,7 @@ final class TeamAdmin
                         <p>
                             <button type="submit" class="button button-primary">
                                 <span class="dashicons dashicons-upload"></span>
-                                <?php esc_html_e('Import Departments', 'team-members-manager'); ?>
+                                <?php esc_html_e('Import Departments', 'wp-team-manager'); ?>
                             </button>
                         </p>
                         <div class="import-result" style="display:none;"></div>
@@ -324,11 +324,11 @@ final class TeamAdmin
     public function renderTeamPage(): void
     {
         if (!current_user_can('manage_options')) {
-            wp_die(__('You do not have permission to access this page.', 'team-members-manager'));
+            wp_die(__('You do not have permission to access this page.', 'wp-team-manager'));
         }
         ?>
         <div class="wrap team-members-admin">
-            <h1 class="wp-heading-inline"><?php esc_html_e('Team Members', 'team-members-manager'); ?></h1>
+            <h1 class="wp-heading-inline"><?php esc_html_e('Team Members', 'wp-team-manager'); ?></h1>
             <?php self::renderNavigation('members'); ?>
             <hr class="wp-header-end">
 
@@ -347,11 +347,11 @@ final class TeamAdmin
                 <table class="wp-list-table widefat fixed striped">
                     <thead>
                         <tr>
-                            <th class="column-image"><?php esc_html_e('Image', 'team-members-manager'); ?></th>
-                            <th class="column-name"><?php esc_html_e('Name', 'team-members-manager'); ?></th>
-                            <th class="column-department"><?php esc_html_e('Department', 'team-members-manager'); ?></th>
-                            <th class="column-contact"><?php esc_html_e('Contact', 'team-members-manager'); ?></th>
-                            <th class="column-actions"><?php esc_html_e('Actions', 'team-members-manager'); ?></th>
+                            <th class="column-image"><?php esc_html_e('Image', 'wp-team-manager'); ?></th>
+                            <th class="column-name"><?php esc_html_e('Name', 'wp-team-manager'); ?></th>
+                            <th class="column-department"><?php esc_html_e('Department', 'wp-team-manager'); ?></th>
+                            <th class="column-contact"><?php esc_html_e('Contact', 'wp-team-manager'); ?></th>
+                            <th class="column-actions"><?php esc_html_e('Actions', 'wp-team-manager'); ?></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -367,7 +367,7 @@ final class TeamAdmin
                                         <?php echo get_the_post_thumbnail($member->ID, [50, 50]); ?>
                                     <?php else: ?>
                                         <img src="<?php echo esc_url(TEAM_PLUGIN_URL . 'assets/images/default.svg'); ?>"
-                                             width="50" height="50" alt="<?php esc_attr_e('Default Avatar', 'team-members-manager'); ?>">
+                                             width="50" height="50" alt="<?php esc_attr_e('Default Avatar', 'wp-team-manager'); ?>">
                                     <?php endif; ?>
                                 </td>
                                 <td class="column-name">
@@ -386,12 +386,12 @@ final class TeamAdmin
                                 </td>
                                 <td class="column-contact">
                                     <?php if ($email): ?>
-                                        <a href="mailto:<?php echo esc_attr((string) $email); ?>" title="<?php esc_attr_e('Email', 'team-members-manager'); ?>">
+                                        <a href="mailto:<?php echo esc_attr((string) $email); ?>" title="<?php esc_attr_e('Email', 'wp-team-manager'); ?>">
                                             <span class="dashicons dashicons-email"></span>
                                         </a>
                                     <?php endif; ?>
                                     <?php if ($website): ?>
-                                        <a href="<?php echo esc_url((string) $website); ?>" target="_blank" rel="noopener" title="<?php esc_attr_e('Website', 'team-members-manager'); ?>">
+                                        <a href="<?php echo esc_url((string) $website); ?>" target="_blank" rel="noopener" title="<?php esc_attr_e('Website', 'wp-team-manager'); ?>">
                                             <span class="dashicons dashicons-admin-links"></span>
                                         </a>
                                     <?php endif; ?>
@@ -399,12 +399,12 @@ final class TeamAdmin
                                 <td class="column-actions">
                                     <a href="<?php echo esc_url((string) get_edit_post_link($member->ID)); ?>"
                                        class="button button-small">
-                                        <?php esc_html_e('Edit', 'team-members-manager'); ?>
+                                        <?php esc_html_e('Edit', 'wp-team-manager'); ?>
                                     </a>
                                     <a href="<?php echo esc_url((string) get_delete_post_link($member->ID)); ?>"
                                        class="button button-small"
-                                       onclick="return confirm('<?php echo esc_js(__('Are you sure you want to delete this team member?', 'team-members-manager')); ?>')">
-                                        <?php esc_html_e('Delete', 'team-members-manager'); ?>
+                                       onclick="return confirm('<?php echo esc_js(__('Are you sure you want to delete this team member?', 'wp-team-manager')); ?>')">
+                                        <?php esc_html_e('Delete', 'wp-team-manager'); ?>
                                     </a>
                                 </td>
                             </tr>
@@ -417,8 +417,8 @@ final class TeamAdmin
                         <?php
                         printf(
                             /* translators: %s: URL to add new team member */
-                            esc_html__('No team members found. %s', 'team-members-manager'),
-                            '<a href="' . esc_url(admin_url('post-new.php?post_type=team_member')) . '">' . esc_html__('Add your first team member', 'team-members-manager') . '</a>.'
+                            esc_html__('No team members found. %s', 'wp-team-manager'),
+                            '<a href="' . esc_url(admin_url('post-new.php?post_type=team_member')) . '">' . esc_html__('Add your first team member', 'wp-team-manager') . '</a>.'
                         );
                         ?>
                     </p>

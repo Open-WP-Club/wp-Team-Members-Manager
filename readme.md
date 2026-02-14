@@ -1,4 +1,4 @@
-# Team Member Manager for WordPress
+# Team Manager for WordPress
 
 A lightweight WordPress plugin to manage and display team members with a responsive grid layout.
 
@@ -9,15 +9,15 @@ A lightweight WordPress plugin to manage and display team members with a respons
 - Responsive CSS Grid layout
 - Profile image support via Featured Image
 - Contact fields (email, website)
-- Shortcode for flexible placement
+- Shortcode with department filtering and limit support
 - Transient caching for performance
 - REST API compatible
 - Translation ready
 
 ## Requirements
 
-- WordPress 6.5+
-- PHP 8.2+
+- WordPress 6.9+
+- PHP 8.3+
 
 ## Installation
 
@@ -60,22 +60,19 @@ Use the shortcode in any post, page, or widget:
 
 ```
 [team_members]
+[team_members department="engineering"]
+[team_members department="engineering,design" limit="6"]
+[team_members limit="4"]
 ```
 
-## Changelog
+| Attribute | Description | Default |
+|-----------|-------------|---------|
+| `department` | Filter by department slug(s), comma-separated | all |
+| `limit` | Maximum number of members to display | all |
 
-### 2.0.0
-- Requires PHP 8.2+ and WordPress 6.5+
-- Added strict types throughout
-- Added REST API support
-- Improved caching with `wp_add_inline_style()`
-- Removed deprecated code patterns
-- Added capability checks
-- Improved security with proper escaping
-- Translation-ready strings
+### Reordering Members
 
-### 1.0.0
-- Initial release
+Set the display order via the "Order" field in the Page Attributes box when editing a team member. Lower numbers appear first.
 
 ## License
 

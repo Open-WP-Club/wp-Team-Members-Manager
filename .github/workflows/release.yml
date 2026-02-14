@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+
+      - name: Install dependencies
+        run: composer install --no-dev --optimize-autoloader --no-interaction
+
+      - name: Build plugin zip
+        run: |
+          TAG="${GITHUB_REF#refs/tags/}"
+          SLUG="order-printing-woocommerce"
+
+          mkdir "$SLUG"
+          cp -r order-printing-woocommerce.php LICENSE README.md "$SLUG/"
+          for dir in includes templates languages assets vendor; do
+            [ -d "$dir" ] && cp -r "$dir" "$SLUG/"
+          done
+
+          zip -r "${SLUG}-${TAG}.zip" "$SLUG/" -x '*.DS_Store'
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: order-printing-woocommerce-*.zip
+          generate_release_notes: true
